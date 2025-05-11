@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Doodlekong"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.setup.SetupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.drawing.DrawingActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi" />
     </application>
 
 </manifest>

@@ -11,5 +11,4 @@ class DrawingApplication: Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
     }
-
 }
