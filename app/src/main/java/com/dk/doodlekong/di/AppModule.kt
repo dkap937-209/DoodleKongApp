@@ -2,6 +2,8 @@ package com.dk.doodlekong.di
 
 import android.content.Context
 import com.dk.doodlekong.data.remote.api.SetupApi
+import com.dk.doodlekong.repository.DefaultSetupRepository
+import com.dk.doodlekong.repository.SetupRepository
 import com.dk.doodlekong.util.Constants.HTTP_BASE_URL
 import com.dk.doodlekong.util.Constants.HTTP_BASE_URL_LOCALHOST
 import com.dk.doodlekong.util.Constants.USE_LOCALHOST
@@ -14,6 +16,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.Polymorphic
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,6 +26,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideSetupRepository(
+        setupApi: SetupApi,
+        @ApplicationContext context: Context
+    ): SetupRepository = DefaultSetupRepository(setupApi, context)
 
     @Singleton
     @Provides

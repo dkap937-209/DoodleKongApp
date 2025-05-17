@@ -6,6 +6,7 @@ buildscript {
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.hilt.android.gradle.plugin)
         classpath(libs.androidx.navigation.safe.args.gradle.plugin)
+        classpath(libs.navigation.safe.args.gradle.plugin.v277)
     }
 }
 
