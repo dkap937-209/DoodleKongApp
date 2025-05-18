@@ -7,7 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.dk.doodlekong.R
 import com.dk.doodlekong.databinding.FragmentUsernameBinding
-import com.dk.doodlekong.ui.setup.SetupViewModel
+import com.dk.doodlekong.ui.setup.UsernameViewModel
 import com.dk.doodlekong.util.Constants.MAX_USERNAME_LENGTH
 import com.dk.doodlekong.util.Constants.MIN_USERNAME_LENGTH
 import com.dk.doodlekong.util.launchWhenStarted
@@ -20,7 +20,7 @@ class UsernameFragment: Fragment(R.layout.fragment_username) {
     private val binding: FragmentUsernameBinding
         get() = _binding!!
 
-    private val viewModel: SetupViewModel by activityViewModels()
+    private val viewModel: UsernameViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,16 +39,16 @@ class UsernameFragment: Fragment(R.layout.fragment_username) {
         launchWhenStarted {
             viewModel.setupEvent.collect { event ->
                 when(event) {
-                    SetupViewModel.SetupEvent.InputEmptyError -> {
+                    UsernameViewModel.SetupEvent.InputEmptyError -> {
                         snackbar(R.string.error_field_empty)
                     }
-                    SetupViewModel.SetupEvent.InputTooLongError -> {
+                    UsernameViewModel.SetupEvent.InputTooLongError -> {
                         snackbar(getString(R.string.error_username_too_short, MAX_USERNAME_LENGTH))
                     }
-                    SetupViewModel.SetupEvent.InputTooShortError -> {
+                    UsernameViewModel.SetupEvent.InputTooShortError -> {
                         snackbar(getString(R.string.error_username_too_short, MIN_USERNAME_LENGTH))
                     }
-                    is SetupViewModel.SetupEvent.NavigateToSelectRoomEvent -> {
+                    is UsernameViewModel.SetupEvent.NavigateToSelectRoomEvent -> {
                         findNavController().navigateSafely(
                             R.id.action_usernameFragment_to_selectRoomFragment,
                             args = Bundle().apply { putString("username", event.username) }

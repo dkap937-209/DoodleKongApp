@@ -11,7 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.dk.doodlekong.R
 import com.dk.doodlekong.data.remote.ws.Room
 import com.dk.doodlekong.databinding.FragmentCreateRoomBinding
-import com.dk.doodlekong.ui.setup.SetupViewModel
+import com.dk.doodlekong.ui.setup.CreateRoomViewModel
 import com.dk.doodlekong.util.launchWhenStarted
 import com.dk.doodlekong.util.navigateSafely
 import com.dk.doodlekong.util.snackbar
@@ -24,7 +24,7 @@ class CreateRoomFragment: Fragment(R.layout.fragment_create_room) {
     private val binding: FragmentCreateRoomBinding
         get() = _binding!!
 
-    private val viewModel: SetupViewModel by activityViewModels()
+    private val viewModel: CreateRoomViewModel by activityViewModels()
     private val args: CreateRoomFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,26 +48,26 @@ class CreateRoomFragment: Fragment(R.layout.fragment_create_room) {
         launchWhenStarted {
             viewModel.setupEvent.collect { event ->
                 when (event) {
-                    is SetupViewModel.SetupEvent.CreateRoomEvent -> {
+                    is CreateRoomViewModel.SetupEvent.CreateRoomEvent -> {
                        viewModel.joinRoom(args.username, event.room.name)
                     }
-                    is SetupViewModel.SetupEvent.InputEmptyError -> {
+                    is CreateRoomViewModel.SetupEvent.InputEmptyError -> {
                         binding.createRoomProgressBar.isVisible = false
                         snackbar(R.string.error_field_empty)
                     }
-                    is SetupViewModel.SetupEvent.InputTooShortError -> {
+                    is CreateRoomViewModel.SetupEvent.InputTooShortError -> {
                         binding.createRoomProgressBar.isVisible = false
                         snackbar(R.string.error_room_name_too_short)
                     }
-                    is SetupViewModel.SetupEvent.InputTooLongError -> {
+                    is CreateRoomViewModel.SetupEvent.InputTooLongError -> {
                         binding.createRoomProgressBar.isVisible = false
                         snackbar(R.string.error_room_name_too_long)
                     }
-                    is SetupViewModel.SetupEvent.CreateRoomErrorEvent -> {
+                    is CreateRoomViewModel.SetupEvent.CreateRoomErrorEvent -> {
                         binding.createRoomProgressBar.isVisible = false
                         snackbar(event.error)
                     }
-                    is SetupViewModel.SetupEvent.JoinRoomEvent -> {
+                    is CreateRoomViewModel.SetupEvent.JoinRoomEvent -> {
                         binding.createRoomProgressBar.isVisible = false
                         findNavController().navigateSafely(
                             R.id.action_createRoomFragment_to_drawingActivity,
@@ -77,7 +77,7 @@ class CreateRoomFragment: Fragment(R.layout.fragment_create_room) {
                             }
                         )
                     }
-                    is SetupViewModel.SetupEvent.JoinRoomErrorEvent -> {
+                    is CreateRoomViewModel.SetupEvent.JoinRoomErrorEvent -> {
                         binding.createRoomProgressBar.isVisible = false
                         snackbar(event.error)
                     }
