@@ -8,6 +8,8 @@ import com.dk.doodlekong.util.Constants.HTTP_BASE_URL
 import com.dk.doodlekong.util.Constants.HTTP_BASE_URL_LOCALHOST
 import com.dk.doodlekong.util.Constants.USE_LOCALHOST
 import com.dk.doodlekong.util.DispatcherProvider
+import com.dk.doodlekong.util.clientId
+import com.dk.doodlekong.util.dataStore
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -16,6 +18,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Polymorphic
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,13 +39,29 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(clientId: String): OkHttpClient {
         return OkHttpClient
             .Builder()
+            .addInterceptor { chain ->
+                val url = chain.request().url.newBuilder()
+                    .addQueryParameter("client_id", clientId)
+                    .build()
+
+                val request = chain.request().newBuilder()
+                    .url(url)
+                    .build()
+                chain.proceed(request)
+            }
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideClientId(@ApplicationContext context: Context): String {
+        return runBlocking { context.dataStore.clientId() }
     }
 
     @Singleton
