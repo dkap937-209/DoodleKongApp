@@ -30,42 +30,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/drawingView">
 
-            <View
+            <com.dk.doodlekong.ui.views.ColourRadioButton
                 android:id="@+id/rbRed"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                app:buttonColour="@color/red"/>
 
-            <View
+            <com.dk.doodlekong.ui.views.ColourRadioButton
                 android:id="@+id/rbGreen"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                app:buttonColour="@color/green"/>
 
-            <View
+            <com.dk.doodlekong.ui.views.ColourRadioButton
                 android:id="@+id/rbBlue"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                app:buttonColour="@android:color/holo_blue_dark"/>
 
-            <View
+            <com.dk.doodlekong.ui.views.ColourRadioButton
                 android:id="@+id/rbOrange"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                app:buttonColour="@color/orange"/>
 
-            <View
+            <com.dk.doodlekong.ui.views.ColourRadioButton
                 android:id="@+id/rbYellow"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                app:buttonColour="@color/yellow" />
 
-            <View
+            <com.dk.doodlekong.ui.views.ColourRadioButton
                 android:id="@+id/rbBlack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:checked="true" />
+                android:checked="true"
+                app:buttonColour="@color/black"/>
 
-            <View
+            <com.dk.doodlekong.ui.views.ImageRadioButton
                 android:id="@+id/rbEraser"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="6dp"
+                app:uncheckedDrawable="@drawable/ic_eraser_unchecked"
+                app:checkedDrawable="@drawable/ic_eraser_checked"
                 />
 
         </RadioGroup>
