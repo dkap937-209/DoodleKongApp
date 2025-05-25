@@ -15,44 +15,32 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Needed for full git history
+        fetch-depth: 0
 
     - name: Calculate next version
       id: version
       run: |
-        # Check if any tags exist
         git fetch --tags
         if ! git describe --tags --abbrev=0 2>/dev/null; then
           echo "No existing tags found - starting with v1.0.0"
           NEW_VERSION="1.0.0"
         else
           LATEST_TAG=$(git describe --tags --abbrev=0)
-          echo "Latest tag: $LATEST_TAG"
-          
           VERSION=${LATEST_TAG#v}
           MAJOR=$(echo $VERSION | cut -d. -f1)
           MINOR=$(echo $VERSION | cut -d. -f2)
           PATCH=$(echo $VERSION | cut -d. -f3)
-          
           NEW_PATCH=$((PATCH + 1))
           NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
         fi
         
-        NEW_TAG="v$NEW_VERSION"
         echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-        echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
-        echo "New version: $NEW_VERSION"
+        echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
 
     - name: Update version in build.gradle.kts
       run: |
-        # Update versionCode (timestamp)
         sed -i "s/versionCode = [0-9]*/versionCode = $(date +%Y%m%d)/" app/build.gradle.kts
-        
-        # Update versionName
         sed -i "s/versionName = \".*\"/versionName = \"${{ steps.version.outputs.version }}\"/" app/build.gradle.kts
-        
-        # Display changes
-        grep -E "versionCode|versionName" app/build.gradle.kts
 
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -64,9 +52,18 @@ jobs:
       uses: android-actions/setup-android@v3
 
     - name: Build with Gradle
+      id: build
       run: |
         chmod +x gradlew
         ./gradlew assembleRelease
+        # Verify APK exists
+        APK_PATH=$(find app/build/outputs/apk -name '*.apk' | head -1)
+        if [ -z "$APK_PATH" ]; then
+          echo "::error::No APK file found"
+          exit 1
+        fi
+        echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+        echo "APK found at: $APK_PATH"
 
     - name: Create and push Git tag
       env:
@@ -86,10 +83,7 @@ jobs:
       with:
         tag_name: ${{ steps.version.outputs.tag }}
         release_name: Release ${{ steps.version.outputs.version }}
-        body: |
-          Automated release for commit ${{ github.sha }}
-          Changelog:
-          $(git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 @^)..@)
+        body: "Automated release"
         draft: false
         prerelease: false
 
@@ -99,7 +93,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: app/build/outputs/apk/release/app-release.apk
+        asset_path: ${{ steps.build.outputs.apk_path }}
         asset_name: app-release-${{ steps.version.outputs.version }}.apk
         asset_content_type: application/vnd.android.package-archive
 
