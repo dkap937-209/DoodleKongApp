@@ -45,13 +45,13 @@ jobs:
     - name: Update version in build.gradle
       run: |
         # Update versionCode (using timestamp)
-        sed -i "s/versionCode [0-9]*/versionCode $(date +%Y%m%d)/" app/build.gradle
+        sed -i "s/versionCode [0-9]*/versionCode $(date +%Y%m%d)/" app/build.gradle.kts
         
         # Update versionName
-        sed -i "s/versionName \".*\"/versionName \"${{ steps.version.outputs.version }}\"/" app/build.gradle
+        sed -i "s/versionName \".*\"/versionName \"${{ steps.version.outputs.version }}\"/" app/build.gradle.kts
         
         # Display the changes
-        cat app/build.gradle | grep version
+        cat app/build.gradle.kts | grep version
 
     - name: Set up JDK
       uses: actions/setup-java@v3
