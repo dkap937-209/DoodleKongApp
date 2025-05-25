@@ -25,6 +25,11 @@ android {
         dataBinding = true
     }
 
+    defaultConfig {
+        versionCode = 20240525
+        versionName = "1.0.0"
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
