@@ -2,6 +2,7 @@ package com.dk.doodlekong.ui.drawing
 
 import androidx.lifecycle.ViewModel
 import com.dk.doodlekong.R
+import com.dk.doodlekong.data.remote.ws.DrawingApi
 import com.dk.doodlekong.util.DispatcherProvider
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DrawingViewModel @Inject constructor(
     private val dispatchers: DispatcherProvider,
-    private val gson: Gson
+    private val gson: Gson,
+    private val drawingApi: DrawingApi
 ): ViewModel() {
 
     private val _selectedColourButtonId = MutableStateFlow(R.id.rbBlack)

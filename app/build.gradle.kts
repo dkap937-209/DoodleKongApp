@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.transport.api)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -109,8 +110,14 @@ dependencies {
     // Gson
     implementation(libs.gson)
 
-
-    //Dagger - Hilt
+    // Dagger - Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    // Scarlet
+    implementation(libs.scarlet)
+    implementation(libs.websocket.okhttp)
+    implementation(libs.lifecycle.android)
+    implementation(libs.message.adapter.gson)
+    implementation(libs.stream.adapter.coroutines)
 }
