@@ -14,8 +14,8 @@ android {
         applicationId = "com.dk.doodlekong"
         minSdk = 24
         targetSdk = 35
-        versionCode = 20250601
-        versionName = "1.0.6"
+        versionCode = 20250612
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,8 +26,8 @@ android {
     }
 
     defaultConfig {
-        versionCode = 20250601
-        versionName = "1.0.6"
+        versionCode = 20250612
+        versionName = "1.0.7"
     }
 
     buildTypes {
